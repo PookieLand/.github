@@ -8,7 +8,7 @@
 
 **Status badges**
 
-Below are the build-and-push badges for each service (badges only, no extra headings):
+Below are the build-and-push badges for each service:
 
 [![Employee Management](https://github.com/PookieLand/HRMS-Employee-Management-Service/actions/workflows/build-and-push.yml/badge.svg?branch=main)](https://github.com/PookieLand/HRMS-Employee-Management-Service/actions/workflows/build-and-push.yml)
 [![User Management](https://github.com/PookieLand/HRMS-User-Management-Service/actions/workflows/build-and-push.yml/badge.svg?branch=main)](https://github.com/PookieLand/HRMS-User-Management-Service/actions/workflows/build-and-push.yml)
