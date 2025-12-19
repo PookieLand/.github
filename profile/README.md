@@ -6,6 +6,21 @@
 
 ![Architecture diagram](docs/architecture.png)
 
+## Infrastructure Diagrams
+
+Detailed Terraform infrastructure diagrams for the HRMS and monitoring components:
+
+### HRMS Kubernetes Infrastructure
+![HRMS Infrastructure](docs/terraform-diagrams/hrms-k8s-infrastructure.png)
+
+### Monitoring Infrastructure
+![Monitoring Infrastructure](docs/terraform-diagrams/grafana-monitoring-infrastructure.png)
+
+### Combined Infrastructure View
+![Combined Infrastructure](docs/terraform-diagrams/combined-infrastructure.png)
+
+For detailed documentation about the infrastructure, see [Terraform Diagrams Documentation](docs/terraform-diagrams/README.md).
+
 **Status badges**
 
 Below are the build-and-push badges for each service:
