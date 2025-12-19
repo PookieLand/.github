@@ -10,13 +10,24 @@
 
 Detailed Terraform infrastructure diagrams for the HRMS and monitoring components:
 
-### HRMS Kubernetes Infrastructure
+### 📋 Text-Based Architecture
+[View ASCII Architecture Diagram](docs/terraform-diagrams/architecture-ascii.txt) - Complete text-based overview
+
+### 📊 Interactive Diagrams (Mermaid)
+Click to view rendered diagrams:
+- [HRMS Kubernetes Infrastructure](docs/terraform-diagrams/hrms-infrastructure.mermaid)
+- [Monitoring Infrastructure](docs/terraform-diagrams/monitoring-infrastructure.mermaid)
+- [Combined Multi-Region View](docs/terraform-diagrams/combined-infrastructure.mermaid)
+
+### 🖼️ Static Diagrams
+
+#### HRMS Kubernetes Infrastructure
 ![HRMS Infrastructure](docs/terraform-diagrams/hrms-k8s-infrastructure.png)
 
-### Monitoring Infrastructure
+#### Monitoring Infrastructure
 ![Monitoring Infrastructure](docs/terraform-diagrams/grafana-monitoring-infrastructure.png)
 
-### Combined Infrastructure View
+#### Combined Infrastructure View
 ![Combined Infrastructure](docs/terraform-diagrams/combined-infrastructure.png)
 
 For detailed documentation about the infrastructure, see [Terraform Diagrams Documentation](docs/terraform-diagrams/README.md).

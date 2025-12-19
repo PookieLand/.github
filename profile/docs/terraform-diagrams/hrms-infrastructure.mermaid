@@ -1,0 +1,60 @@
+graph TB
+    subgraph AWS["AWS Region: ap-south-1"]
+        subgraph VPC["VPC 10.0.0.0/16"]
+            IGW[Internet Gateway]
+            
+            subgraph Subnet["Public Subnet 10.0.1.0/24"]
+                subgraph K8s["Kubernetes Cluster"]
+                    Master["K8s Master<br/>(t3.medium, 30GB)<br/>EIP: xxx"]
+                    Worker1["K8s Worker 1<br/>(t3.medium, 50GB)<br/>EIP: yyy"]
+                    Worker2["K8s Worker 2<br/>(t3.medium, 50GB)<br/>EIP: zzz"]
+                end
+            end
+        end
+        
+        subgraph Services["AWS Services"]
+            ECR[("ECR<br/>Container Registry")]
+            NLB{{"Network Load<br/>Balancer"}}
+            Secrets[/"Secrets Manager"\]
+            IAM[/"IAM Roles"\]
+        end
+        
+        subgraph Backend["Terraform Backend"]
+            S3[("S3<br/>hrms-terraform-backend-prod")]
+            DynamoDB[("DynamoDB<br/>hrms-terraform-locks")]
+        end
+    end
+    
+    %% Network connections
+    IGW -->|routes| Master
+    IGW -->|routes| Worker1
+    IGW -->|routes| Worker2
+    
+    %% Service connections
+    Master -.->|pulls images| ECR
+    Worker1 -.->|pulls images| ECR
+    Worker2 -.->|pulls images| ECR
+    
+    NLB -->|routes traffic| Worker1
+    NLB -->|routes traffic| Worker2
+    
+    Master -.->|reads secrets| Secrets
+    Worker1 -.->|reads secrets| Secrets
+    Worker2 -.->|reads secrets| Secrets
+    
+    IAM -.->|assigned to| Master
+    IAM -.->|assigned to| Worker1
+    IAM -.->|assigned to| Worker2
+    
+    %% Backend
+    S3 -.->|state locking| DynamoDB
+    
+    style Master fill:#90EE90
+    style Worker1 fill:#90EE90
+    style Worker2 fill:#90EE90
+    style ECR fill:#FFE4B5
+    style NLB fill:#FFE4B5
+    style Secrets fill:#FFE4B5
+    style IAM fill:#FFE4B5
+    style S3 fill:#FFB6C1
+    style DynamoDB fill:#FFB6C1

@@ -1,0 +1,54 @@
+graph TB
+    subgraph AWS["AWS Region: ap-southeast-1"]
+        subgraph MonServer["Monitoring Server EC2"]
+            EC2["EC2 Instance<br/>Ubuntu 22.04<br/>t3.medium<br/>50GB root + 50GB data<br/>EIP: monitor_sys_eip"]
+            
+            subgraph Stack["Monitoring Stack"]
+                Grafana["🎨 Grafana<br/>Port 3000<br/>(Public)"]
+                Prometheus["📊 Prometheus<br/>Port 9090<br/>(Internal)"]
+                OpenSearch["🔍 OpenSearch<br/>Port 9200<br/>(Public)"]
+                Dashboards["📈 OpenSearch<br/>Dashboards<br/>Port 5601<br/>(Public)"]
+                Alertmanager["🔔 Alertmanager<br/>Port 9093<br/>(Internal)"]
+                NodeExporter["📡 Node Exporter<br/>Port 9100<br/>(Internal)"]
+            end
+        end
+        
+        subgraph Backend["Terraform Backend"]
+            S3[("S3<br/>hrms-terraform-backend<br/>-singapore-prod")]
+            DynamoDB[("DynamoDB<br/>hrms-terraform-locks-sg")]
+        end
+        
+        SG[/"Security Group<br/>SSH: 22<br/>Grafana: 3000<br/>OpenSearch: 9200, 5601<br/>Internal: 9090, 9093, 9100"\]
+    end
+    
+    %% Hosting connections
+    EC2 -.->|hosts| Grafana
+    EC2 -.->|hosts| Prometheus
+    EC2 -.->|hosts| OpenSearch
+    EC2 -.->|hosts| Dashboards
+    EC2 -.->|hosts| Alertmanager
+    EC2 -.->|hosts| NodeExporter
+    
+    %% Service connections
+    Grafana -->|queries| Prometheus
+    Grafana -->|queries| OpenSearch
+    Dashboards -->|visualizes| OpenSearch
+    Prometheus -->|scrapes| NodeExporter
+    Prometheus -->|sends alerts| Alertmanager
+    
+    %% Security
+    SG -.->|protects| EC2
+    
+    %% Backend
+    S3 -.->|state locking| DynamoDB
+    
+    style EC2 fill:#90EE90
+    style Grafana fill:#FFA500
+    style Prometheus fill:#FFA500
+    style OpenSearch fill:#FFA500
+    style Dashboards fill:#FFA500
+    style Alertmanager fill:#FFA500
+    style NodeExporter fill:#FFA500
+    style S3 fill:#FFB6C1
+    style DynamoDB fill:#FFB6C1
+    style SG fill:#F08080

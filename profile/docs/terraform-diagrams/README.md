@@ -1,8 +1,30 @@
 # Terraform Infrastructure Diagrams
 
-This directory contains automatically generated Terraform architecture diagrams for the PookieLand HRMS project infrastructure.
+This directory contains architecture diagrams for the PookieLand HRMS project infrastructure, created from Terraform configurations and Ansible playbooks.
 
-## Diagrams Overview
+## 📋 Available Formats
+
+The infrastructure is documented in multiple formats:
+
+1. **ASCII Diagram** (`architecture-ascii.txt`) - Complete text-based architecture overview
+2. **Mermaid Diagrams** (`.mermaid` files) - Interactive diagrams that render in GitHub/GitLab
+3. **PNG/SVG Diagrams** (`.png`, `.svg` files) - Static image diagrams with icons
+
+## 🎨 ASCII Architecture Overview
+
+For a complete text-based view of the entire architecture, see [`architecture-ascii.txt`](architecture-ascii.txt).
+
+## 📊 Interactive Mermaid Diagrams
+
+Mermaid diagrams render directly in GitHub and many documentation platforms:
+
+- [`hrms-infrastructure.mermaid`](hrms-infrastructure.mermaid) - HRMS Kubernetes cluster
+- [`monitoring-infrastructure.mermaid`](monitoring-infrastructure.mermaid) - Monitoring stack
+- [`combined-infrastructure.mermaid`](combined-infrastructure.mermaid) - Complete multi-region view
+
+**To view:** Simply click on any `.mermaid` file in GitHub to see the rendered diagram.
+
+## 📐 Diagrams Overview
 
 ### 1. HRMS Kubernetes Infrastructure
 **File**: `hrms-k8s-infrastructure.png` / `hrms-k8s-infrastructure.svg`
