@@ -1,0 +1,71 @@
+graph LR
+    subgraph Project["PookieLand HRMS Project"]
+        subgraph HRMS["AWS ap-south-1 - HRMS Infrastructure"]
+            subgraph K8sCluster["Kubernetes Cluster"]
+                Master["Master<br/>Node"]
+                Worker1["Worker 1"]
+                Worker2["Worker 2"]
+            end
+            
+            ECR[("ECR")]
+            NLB{{"NLB"}}
+            VPC["VPC<br/>10.0.0.0/16"]
+            Backend1[("TF State<br/>ap-south-1")]
+        end
+        
+        subgraph Mon["AWS ap-southeast-1 - Monitoring"]
+            subgraph MonStack["Monitoring Stack"]
+                Grafana["🎨<br/>Grafana"]
+                Prometheus["📊<br/>Prometheus"]
+                OpenSearch["🔍<br/>OpenSearch"]
+            end
+            
+            MonEC2["Monitoring<br/>Server<br/>(Ubuntu 22.04)"]
+            Backend2[("TF State<br/>ap-southeast-1")]
+        end
+    end
+    
+    %% HRMS Internal
+    VPC -.-> Master
+    VPC -.-> Worker1
+    VPC -.-> Worker2
+    
+    NLB --> Worker1
+    NLB --> Worker2
+    
+    Master -.->|pulls| ECR
+    Worker1 -.->|pulls| ECR
+    Worker2 -.->|pulls| ECR
+    
+    %% Monitoring Internal
+    MonEC2 -.->|hosts| Grafana
+    MonEC2 -.->|hosts| Prometheus
+    MonEC2 -.->|hosts| OpenSearch
+    
+    Grafana -->|queries| Prometheus
+    Grafana -->|queries| OpenSearch
+    
+    %% Cross-region Monitoring
+    Prometheus ==>|monitors| Master
+    Prometheus ==>|monitors| Worker1
+    Prometheus ==>|monitors| Worker2
+    
+    Master ==>|ships logs| OpenSearch
+    Worker1 ==>|ships logs| OpenSearch
+    Worker2 ==>|ships logs| OpenSearch
+    
+    style Master fill:#90EE90
+    style Worker1 fill:#90EE90
+    style Worker2 fill:#90EE90
+    style MonEC2 fill:#90EE90
+    style Grafana fill:#FFA500
+    style Prometheus fill:#FFA500
+    style OpenSearch fill:#FFA500
+    style Backend1 fill:#FFB6C1
+    style Backend2 fill:#FFB6C1
+    style ECR fill:#FFE4B5
+    style NLB fill:#FFE4B5
+    style VPC fill:#D3D3D3
+    
+    linkStyle 17,18,19 stroke:red,stroke-width:2px
+    linkStyle 20,21,22 stroke:blue,stroke-width:2px
